@@ -2,21 +2,17 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class DiceThrow extends Model
 {
-    use Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password'
+        'game_id', 'player_id'
     ];
 
     /**
@@ -25,7 +21,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token'
+        //
     ];
 
     /**
@@ -34,12 +30,23 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'name' => 'string',
-        'email' => 'string',
-        'email_verified_at' => 'datetime',
-        'password' => 'string',
-        'remember_token' => 'string',
         'created_at' => 'timestamp',
         'updated_at' => 'timestamp'
     ];
+
+    /**
+     * Get the Player for the DiceThrow.
+     */
+    public function player()
+    {
+        return $this->belongsTo(\App\Player::class);
+    }
+
+    /**
+     * Get the Game for the DiceThrow.
+     */
+    public function game()
+    {
+        return $this->belongsTo(\App\Game::class);
+    }
 }
